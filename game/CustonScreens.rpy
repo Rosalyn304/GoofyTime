@@ -13,14 +13,14 @@ screen Main_choice:
         yalign 0.5
 
         textbutton _("Talk"):
-            action [Hide("countdown"), Call("talkmenu")]
-        textbutton _("Cry"):
-            action [Hide("countdown"), Call("cry")]
+            action [Hide("countdown"), Hide("cry"), Call("talkmenu")]
+        textbutton _("Quit"):
+            action [Hide("countdown"), Hide("talkmenu"), Call("cry")]
         #$ time.sleep(5)
         #Hide(Main_choice)
 
 
-screen talk_choice():
+screen talk_choice:
     style_prefix "choice"
     vbox:
         xalign 0.9
@@ -33,18 +33,16 @@ screen talk_choice():
         textbutton _("Return"):
             action [Hide("countdown"), Jump("mainloop")]
 
-screen cry_choice():
+screen quit_choice:
     style_prefix "choice"
     vbox:
         xalign 0.9
         yalign 0.1
 
-        textbutton _("Cry harder"):
+        textbutton _("Yes, I want out of this hellhole, {b}Woman.{/b}"):
             action [Hide("countdown"), Jump("waa")]
         textbutton _("Kill"):
             action [Hide("countdown"), Jump("copium")]
-        textbutton _("Return"):
-            action [Hide("countdown"), Jump("mainloop")]
 #default menuset = set()
 
 
