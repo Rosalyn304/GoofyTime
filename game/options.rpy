@@ -1,19 +1,19 @@
 ﻿## This template version is 4.1.0. When asked to provide the template version
-## you are using, give them this version number. 
+## you are using, give them this version number.
 ### DO NOT REMOVE OR CHANGE THE ABOVE COMMENT. ###
 
 ## options.rpy
 # This file customizes what your mod is and and how it starts and builds!
 
 # This controls what your mod is called.
-define config.name = "DDLC Mod Template – Python 3 Edition"
+define config.name = "Kotonoha After Story: Alpha 1"
 
 # This controls whether you want your mod name to show in the main menu.
 # If your mod name is big, it is suggested to turn this off.
 define gui.show_name = True
 
 # This controls the version number of your mod.
-define config.version = "4.2.1–Py3"
+define config.version = "0.0.1"
 
 # This adds information about your mod in the About screen.
 # DDLC does not have a 'About' screen so you can leave this blank.
@@ -24,7 +24,7 @@ define gui.about = _("")
 # Note:
 #   The build name is ASCII only so no numbers, spaces, or semicolons.
 #   Example: Doki Doki Yuri Time to DokiDokiYuriTime
-define build.name = "DDLCModTemplateTwo-Py3"
+define build.name = "KAS-A-1"
 
 # This configures whether your mod has sound effects.
 define config.has_sound = True
@@ -35,7 +35,7 @@ define config.has_music = True
 # This configures whether your mod has voices.
 define config.has_voice = False
 
-# This configures what music will play when you launch your mod and in the 
+# This configures what music will play when you launch your mod and in the
 # main menu.
 define config.main_menu_music = audio.t1
 
@@ -101,7 +101,7 @@ define config.autosave_slots = 0
 # This controls whether the player can rollback to the previous dialogue in-game.
 define config.rollback_enabled = config.developer
 
-# These variables controls the layers placement of screens, images, and more. 
+# These variables controls the layers placement of screens, images, and more.
 # It is highly recommended to leave these variables alone.
 define config.layers = [ 'master', 'transient', 'screens', 'overlay', 'front' ]
 define config.image_cache_size = 64
@@ -113,8 +113,8 @@ init python:
     if len(renpy.loadsave.location.locations) > 1: del(renpy.loadsave.location.locations[1])
     renpy.game.preferences.pad_enabled = False
     def replace_text(s):
-        s = s.replace('--', u'\u2014') 
-        s = s.replace(' - ', u'\u2014') 
+        s = s.replace('--', u'\u2014')
+        s = s.replace(' - ', u'\u2014')
         return s
     config.replace_text = replace_text
 
@@ -160,14 +160,14 @@ init python:
     build.archive("mod_assets", 'mod')
 
     # Do not touch these lines. This is so Ren'Py can add your mods' py file
-    # and a special launcher for Linux and macOS to run your mod. 
+    # and a special launcher for Linux and macOS to run your mod.
     build.renpy_patterns.remove(('renpy.py', ['all']))
     build.classify_renpy("renpy.py", "renpy all")
-    
+
     build.early_base_patterns.remove(('*.sh', None))
     build.classify("LinuxLauncher.sh", "linux") ## Linux Launcher Script
     build.classify("*.sh", None)
-    
+
     #############################################################
     # These variables classify packages for PC and Android platforms.
     # Make sure to add 'all' to your build.classify variable if you are planning
@@ -200,7 +200,7 @@ init python:
     build.classify('**.rpa', None)
     build.classify('README.html','mod all')
     build.classify('README.linux', 'linux')
-   
+
     # This sets' README.html as documentation
     build.documentation('README.html')
 

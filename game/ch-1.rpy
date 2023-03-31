@@ -1,13 +1,16 @@
 label intro:
-    scene bg bedroom
+    scene black
     with dissolve_scene_full
+    show kotonoha 1a
     stop music fadeout 0.5
 
     $ persistent.autoload = "intro"
     $ config.allow_skipping = False
     $ renpy.save_persistent()
 
-    "mod time bitches"
+    show kotonoha 1b
+    k "mod time bitches"
+    show kotonoha 1a
     jump mainloop
 
 label mainloop:
@@ -19,11 +22,15 @@ label mainloop:
 
 
 label talkmenu:
-    "What do you want to talk about?"
+    show kotonoha 1b
+    k "What do you want to talk about?"
+    show kotonoha 1a
     call screen talk_choice
 
 label cry:
-    "crying? lil bitch boy."
+    show kotonoha 1b
+    k "crying? lil bitch boy."
+    show kotonoha 1a
     call screen quit_choice
 
 
@@ -32,7 +39,9 @@ label cry:
 
 #get expression
 label Goto_Chat:
-    "What to talk about..."
+    show kotonoha 1b
+    k "What to talk about..."
+    show kotonoha 1a
     hide Main_choice
 
     $ valid_conversation = False
@@ -55,12 +64,14 @@ label Goto_Chat:
 
 #quit
 label waa:
-    "Oh... Well, I guess I'll see you later then."
-    "Adios, manwhore!"
+    show kotonoha 1b
+    k "Oh... Well, I guess I'll see you later then."
+    show kotonoha 1c
+    k "Adios, manwhore!"
     $ renpy.call_in_new_context("confirm_quit")
 
 label copium:
-    "Aww, I knew we had something together! <3"
+    k "Aww, I knew we had something together! <3"
     call mainloop
 
 #talks
