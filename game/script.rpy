@@ -1,13 +1,13 @@
 ## script.rpy
 
 # This is the main script that Ren'Py calls upon to start
-# your mod's story! 
+# your mod's story!
 
 label start:
 
     # This label configures the anticheat number for the game after Act 1.
     # It is recommended to leave this as-is and use the following in your script:
-    #   $ persistent.anticheat = renpy.random.randint(X, Y) 
+    #   $ persistent.anticheat = renpy.random.randint(X, Y)
     #   X - The minimum number | Y - The maximum number
     $ anticheat = persistent.anticheat
 
@@ -19,8 +19,8 @@ label start:
 
     ## Names of the Characters
     # These variables set up the names of the characters in the game.
-    # To add a character, use the following example below: 
-    #   $ mi_name = "Mike". 
+    # To add a character, use the following example below:
+    #   $ mi_name = "Mike".
     # Don't forget to add the character to 'definitions.rpy'!
     $ s_name = "???"
     $ m_name = "Girl 3"
@@ -37,7 +37,7 @@ label start:
     # This variable controls whether Sayori is dead. It is recommended to leave
     # this as-is.
     $ in_sayori_kill = None
-    
+
     # These variables controls whether the player can skip dialogue or transitions.
     $ allow_skipping = True
     $ config.allow_skipping = True
@@ -47,17 +47,19 @@ label start:
     # 'persistent.playthrough' controls the playthrough number the player is on i.e (Act 1, 2, 3, 4)
 
     # REMOVE THIS LINE WHEN YOU HAVE MADE A STORY SCRIPT FILE AND CALLED IT HERE
-    call screen dialog(message="It seems that you are trying to run the mod template as a new game with no story.\nThis is a template, not an actual mod. Please code a story for your mod, call it in \'script.rpy\', and try again.", ok_action=MainMenu(confirm=False))
+    #call screen dialog(message="It seems that you are trying to run the mod template as a new game with no story.\nThis is a template, not an actual mod. Please code a story for your mod, call it in \'script.rpy\', and try again.", ok_action=MainMenu(confirm=False))
 
+    call intro
     ## Example on calling scripts from DDLC.
     # if persistent.playthrough == 0:
+
     #     # This variable sets the chapter number to X depending on the chapter
     #     # your player is experiencing ATM.
     #     $ chapter = 0
 
     #     # This call statement calls your script label to be played.
     #     call ch0_main
-        
+
     #     # This call statement calls the poem mini-game to be played.
     #     call poem
 
@@ -92,10 +94,7 @@ label start:
     #     # This python statement writes a file from within the game to the game folder
     #     # or to the Android/data/[modname]/files/game folder.
     #     python:
-    #         if renpy.android and renpy.version_tuple == (6, 99, 12, 4, 2187):
-    #             try: file(os.environ['ANDROID_PUBLIC'] + "/hxppy thxughts.png")
-    #             except IOError: open(os.environ['ANDROID_PUBLIC'] + "/hxppy thxughts.png", "wb").write(renpy.file("hxppy thxughts.png").read())
-    #         elif renpy.android:
+    #         if renpy.android:
     #             try: renpy.file(os.environ['ANDROID_PUBLIC'] + "/hxppy thxughts.png")
     #             except IOError: open(os.environ['ANDROID_PUBLIC'] + "/hxppy thxughts.png", "wb").write(renpy.file("hxppy thxughts.png").read())
     #         else:
@@ -113,7 +112,7 @@ label start:
     # elif persistent.playthrough == 1:
     #     $ chapter = 0
     #     call ch10_main
-        
+
     #     # This jump statement jumps over to Act 2 from Act 1.
     #     jump playthrough2
 
@@ -126,10 +125,7 @@ label start:
     #         call poem
 
     #         python:
-    #             if renpy.android and renpy.version_tuple == (6, 99, 12, 4, 2187):
-    #                 try: file(os.environ['ANDROID_PUBLIC'] + "/CAN YOU HEAR ME.txt")
-    #                 except IOError: open(os.environ['ANDROID_PUBLIC'] + "/CAN YOU HEAR ME.txt", "wb").write(renpy.file("CAN YOU HEAR ME.txt").read())
-    #             elif renpy.android:
+    #             if renpy.android:
     #                 try: renpy.file(os.environ['ANDROID_PUBLIC'] + "/CAN YOU HEAR ME.txt")
     #                 except IOError: open(os.environ['ANDROID_PUBLIC'] + "/CAN YOU HEAR ME.txt", "wb").write(renpy.file("CAN YOU HEAR ME.txt").read())
     #             else:
@@ -146,10 +142,7 @@ label start:
     #         call poem(False)
 
     #         python:
-    #             if renpy.android and renpy.version_tuple == (6, 99, 12, 4, 2187):
-    #                 try: file(os.environ['ANDROID_PUBLIC'] + "/iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii.txt")
-    #                 except IOError: open(os.environ['ANDROID_PUBLIC'] + "/iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii.txt", "wb").write(renpy.file("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii.txt").read())
-    #             elif renpy.android:
+    #             if renpy.android:
     #                 try: renpy.file(os.environ['ANDROID_PUBLIC'] + "/iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii.txt")
     #                 except IOError: open(os.environ['ANDROID_PUBLIC'] + "/iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii.txt", "wb").write(renpy.file("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii.txt").read())
     #             else:
