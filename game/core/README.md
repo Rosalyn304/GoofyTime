@@ -13,6 +13,8 @@ This file contains old labels formerly used by old features before a revised upd
 ## exceptions.rpy
 This file stores the exceptions that the mod template can throw to you during development. The following exceptions stored in this file that can occur are:
 
+- `NotRenPyEight` - You are attempting to run this mod project on Ren'Py 6 or 7.
+   > Solution: Run your mod in Ren'Py 8 or download the Python 2 template and make your mod from scratch with it.
 - `DDLCRPAsMissing` - You are missing a RPA file in the *game* folder which the game requires in order to load the game properly. 
    > Solution: Add the missing RPA and try relaunching the game again.
 - `IllegalModLocation` - You have placed your mod/mod project in a location that the mod template prohibits (usually the OneDrive folder). 

@@ -9,11 +9,6 @@ init offset = -1
 
 # Thanks RenpyTom! Borrowed from the Ren'Py Launcher
 init python:
-    # Ren'Py 6 doesn't have translate_string defined by default so
-    # import it and set for Ren'Py 7 code workings.
-    from renpy.translation import translate_string
-    renpy.translate_string = translate_string
-
     def scan_translations():
 
         languages = renpy.known_languages()
@@ -22,17 +17,11 @@ init python:
             return None
 
         rv = [(i, renpy.translate_string("{#language name and font}", i)) for i in languages ]
-        
-        # We will use a imported Ren'Py 7 function for Ren'Py 6
-        if renpy.version_tuple == (6, 99, 12, 4, 2187):
-            rv.sort(key=lambda a : filter_text_tags(a[1], allow=[]).lower())
-        else:
-            rv.sort(key=lambda a : renpy.filter_text_tags(a[1], allow=[]).lower())
+        rv.sort(key=lambda a : renpy.filter_text_tags(a[1], allow=[]).lower())
 
         rv.insert(0, (None, "English"))
 
-        # Cause Ren'Py 6 sets this as float, set it as int
-        bound = int(math.ceil(len(rv)/2.))
+        bound = math.ceil(len(rv)/2.)
 
         return (rv[:bound], rv[bound:2*bound])
 
@@ -319,7 +308,7 @@ style input:
 ## New as of 3.0.0
 ##    - You may now pass through argurments to the menu options to colorize
 ##      your menu as you like. Add (kwargs=[color hex or style name]) to your
-##      menu option name and you get different buttons! 
+##      menu option name and you get different buttons!
 ##
 ##      Examples: "Option 1 (kwargs=#00fbff)" | "Option 2 (kwargs=#00fbff, #6cffff)"
 ##
@@ -331,26 +320,26 @@ screen choice(items):
     vbox:
 
         for i in items:
-            
+
             if "kwargs=" in i.caption:
 
                 $ kwarg = i.caption.split("(kwargs=")[-1].replace(")", "")
                 $ caption = i.caption.replace(" (kwargs=" + kwarg + ")", "")
 
                 if "#" in kwarg:
-                    
+
                     $ kwarg = kwarg.replace(", ", ",").split(",")
-                    
+
                     if len(kwarg) == 1:
                         $ kwarg.append('#ffe6f4')
-                    
+
                     $ arg1 = kwarg[0]
                     $ arg2 = kwarg[-1]
-                    
+
                     textbutton caption:
-                        idle_background Frame(im.MatrixColor(im.MatrixColor("gui/button/choice_idle_background.png", im.matrix.desaturate() * im.matrix.contrast(1.29) * im.matrix.colorize("#00f", "#fff") * im.matrix.saturation(120)), 
+                        idle_background Frame(im.MatrixColor(im.MatrixColor("gui/button/choice_idle_background.png", im.matrix.desaturate() * im.matrix.contrast(1.29) * im.matrix.colorize("#00f", "#fff") * im.matrix.saturation(120)),
                             im.matrix.desaturate() * im.matrix.colorize(arg1, arg2)), gui.choice_button_borders)
-                        hover_background Frame(im.MatrixColor(im.MatrixColor("gui/button/choice_hover_background.png", im.matrix.desaturate() * im.matrix.contrast(1.29) * im.matrix.colorize("#00f", "#fff") * im.matrix.saturation(120)), 
+                        hover_background Frame(im.MatrixColor(im.MatrixColor("gui/button/choice_hover_background.png", im.matrix.desaturate() * im.matrix.contrast(1.29) * im.matrix.colorize("#00f", "#fff") * im.matrix.saturation(120)),
                             im.matrix.desaturate() * im.matrix.colorize(arg1, "#fff")), gui.choice_button_borders)
                         action i.action
 
@@ -525,7 +514,7 @@ screen navigation():
             if renpy.variant("pc"):
 
                 ## Help isn't necessary or relevant to mobile devices.
-                #textbutton _("Help") action OpenURL("https://github.com/GanstaKingofSA/DDLCModTemplate2.0")
+                textbutton _("Help") action [Help("README.html"), Show(screen="dialog", message="The help file has been opened in your browser.", ok_action=Hide("dialog"))]
 
                 ## The quit button is banned on iOS and unnecessary on Android.
                 textbutton _("Quit") action Quit(confirm=not main_menu)
@@ -808,7 +797,7 @@ screen about():
                 add Transform("mod_assets/DDLCModTemplateLogo.png", size=(200,200)) xalign .5
 
                 null height 5
-                
+
                 label "[config.name!t]" xalign .5
                 text _("Version [config.version!t]\n") xalign .5
 
@@ -819,7 +808,7 @@ screen about():
                 ## Do not touch/remove these unless the © or – symbol isn't available in your font.
                 ## You may add things above or below it.
                 ## If you are not going with a splashscreen option, this first line MUST stay in the mod.
-                text "Made with GanstaKingofSA's {a=https://github.com/GanstaKingofSA/DDLCModTemplate2.0}DDLC Mod Template 2.0{/a}.\nCopyright © 2019-" + str(datetime.date.today().year) + " Azariel Del Carmen (GanstaKingofSA). All rights reserved.\n"
+                text "Made with GanstaKingofSA's {a=https://github.com/GanstaKingofSA/DDLCModTemplate2.0}DDLC Mod Template 2.0{/a}\nCopyright © 2019-" + str(datetime.date.today().year) + " Azariel Del Carmen (GanstaKingofSA). All rights reserved.\n"
                 text "Doki Doki Literature Club. Copyright © 2017 Team Salvato. All rights reserved.\n"
                 text _("Made with {a=https://www.renpy.org/}Ren'Py{/a} [renpy.version_only].\n[renpy.license!t]")
 
@@ -1030,7 +1019,7 @@ style viewframe_text is confirm_prompt_text:
 ## Windowed Resolutions allow players to scale the game to different resolutions.
 ## Uncomment the below #'s to enable this.
 # screen confirm_res(old_res):
-    
+
 #     ## Ensure other screens do not get input while this screen is displayed.
 #     modal True
 
@@ -1071,7 +1060,7 @@ style viewframe_text is confirm_prompt_text:
 #                 # else:
 #                 textbutton _("Yes") action Hide("confirm_res")
 #                 textbutton _("No") action [Function(renpy.set_physical_size, old_res), Hide("confirm_res")]
-    
+
 #     timer 5.0 action [Function(renpy.set_physical_size, old_res), Hide("confirm_res")]
 
 # init python:
@@ -1147,7 +1136,7 @@ screen ddlc_preferences():
             textbutton _("Unseen Text") action Preference("skip", "toggle")
             textbutton _("After Choices") action Preference("after choices", "toggle")
             # textbutton _("Transitions") action InvertSelected(Preference("transitions", "toggle"))
-    
+
     null height (4 * gui.pref_spacing)
 
     hbox:
@@ -1155,10 +1144,10 @@ screen ddlc_preferences():
         box_wrap True
 
         vbox:
-            
+
             hbox:
                 label _("Text Speed")
-                
+
                 null width 5
 
                 text str(preferences.text_cps) style "value_text"
@@ -1168,21 +1157,21 @@ screen ddlc_preferences():
 
             hbox:
                 label _("Auto-Forward Time")
-                
+
                 null width 5
-                
+
                 text str(round(preferences.afm_time)) style "value_text"
 
             bar value Preference("auto-forward time")
 
         vbox:
-            
+
             if config.has_music:
                 hbox:
                     label _("Music Volume")
-                    
+
                     null width 5
-                
+
                     text str(round(preferences.get_volume("music") * 100)) style "value_text"
 
                 hbox:
@@ -1192,9 +1181,9 @@ screen ddlc_preferences():
 
                 hbox:
                     label _("Sound Volume")
-                    
+
                     null width 5
-                
+
                     text str(round(preferences.get_volume("sfx") * 100)) style "value_text"
 
                 hbox:
@@ -1206,9 +1195,9 @@ screen ddlc_preferences():
             if config.has_voice:
                 hbox:
                     label _("Voice Volume")
-                    
+
                     null width 5
-                
+
                     text str(round(preferences.get_volume("voice") * 100)) style "value_text"
 
                 hbox:
@@ -1232,54 +1221,89 @@ screen template_preferences():
             vbox:
                 style_prefix "check"
                 label _("Game Modes")
-                textbutton _("Uncensored Mode") action If(persistent.uncensored_mode, 
-                    ToggleField(persistent, "uncensored_mode"), 
-                    Show("confirm", message="Are you sure you want to turn on Uncensored Mode?\nDoing so will enable more adult/sensitive\ncontent in your playthrough.\n\nThis setting will be dependent on the modder if\nthey programmed these checks in their story.", 
+                textbutton _("Uncensored Mode") action If(persistent.uncensored_mode,
+                    ToggleField(persistent, "uncensored_mode"),
+                    Show("confirm", message="Are you sure you want to turn on Uncensored Mode?\nDoing so will enable more adult/sensitive\ncontent in your playthrough.\n\nThis setting will be dependent on the modder if\nthey programmed these checks in their story.",
                         yes_action=[Hide("confirm"), ToggleField(persistent, "uncensored_mode")],
                         no_action=Hide("confirm")
                     ))
-                textbutton _("Let's Play Mode") action If(persistent.lets_play, 
+                textbutton _("Let's Play Mode") action If(persistent.lets_play,
                     ToggleField(persistent, "lets_play"),
-                    [ToggleField(persistent, "lets_play"), Show("dialog", 
-                        message="You have enabled Let's Play Mode.\nThis mode allows you to skip content that\ncontains sensitive information or apply alternative\nstory options.\n\nThis setting will be dependent on the modder\nif they programmed these checks in their story.", 
+                    [ToggleField(persistent, "lets_play"), Show("dialog",
+                        message="You have enabled Let's Play Mode.\nThis mode allows you to skip content that\ncontains sensitive information or apply alternative\nstory options.\n\nThis setting will be dependent on the modder\nif they programmed these checks in their story.",
                         ok_action=Hide("dialog")
                     )])
-        
+
         vbox:
             style_prefix "name"
             label _("Player Name")
-            
+
             null height 3
-            
+
             if player == "":
                 text _("No Name Set") xalign 0.5
             else:
                 text "[player]" xalign 0.5
-            
+
             textbutton _("Change Name") action Show(screen="name_input", message="Please enter your name", ok_action=Function(FinishEnterName, launchGame=False)):
                 text_style "navigation_button_text"
 
-        null height (4 * gui.pref_spacing)
+        python:
+            has_discord_module = True
+            try:
+                RPC
+            except NameError:
+                has_discord_module = False
 
-        hbox:
-            box_wrap True
+        if not renpy.android and has_discord_module:
+            vbox:
+                style_prefix "name"
+                label _("Discord RPC")
 
-            if enable_languages and translations:
-                vbox:
-                    style_prefix "radio"
-                    label _("Language")
-                    hbox:
-                        viewport:
-                            mousewheel True
-                            scrollbars "vertical"
-                            ysize 120
-                            has vbox
+                python:
+                    connect_status = _("Disconnected")
+                    if not persistent.enable_discord:
+                        connect_status = _("Disabled")
+                    if RPC.rpc_connected:
+                        connect_status = _("Connected")
 
-                            for tran in translations:
-                                vbox:
-                                    for tlid, tlname in tran:
-                                        textbutton tlname:
-                                            action Language(tlid)
+                null height 3
+
+                text "[connect_status]" xalign 0.5
+
+                python:
+                    enable_text = _("Enable")
+                    if persistent.enable_discord:
+                        enable_text = _("Disable")
+
+                textbutton enable_text action [ToggleField(persistent, "enable_discord"),
+                    If(persistent.enable_discord, Function(RPC.close), Function(RPC.connect, reset=True))]:
+                        text_style "navigation_button_text"
+                if persistent.enable_discord and not RPC.rpc_connected:
+                    textbutton _("Reconnect") action Function(RPC.connect, reset=True):
+                        text_style "navigation_button_text"
+
+    null height (4 * gui.pref_spacing)
+
+    hbox:
+        box_wrap True
+
+        if enable_languages and translations:
+            vbox:
+                style_prefix "radio"
+                label _("Language")
+                hbox:
+                    viewport:
+                        mousewheel True
+                        scrollbars "vertical"
+                        ysize 120
+                        has vbox
+
+                        for tran in translations:
+                            vbox:
+                                for tlid, tlname in tran:
+                                    textbutton tlname:
+                                        action Language(tlid)
 
 ## Preferences screen ##########################################################
 ##
@@ -1310,14 +1334,14 @@ screen preferences():
                 spacing 5
                 textbutton _("DDLC Settings") action [SetScreenVariable("ddlc_settings", True), SensitiveIf(not ddlc_settings)]
                 textbutton _("Template Settings") action [SetScreenVariable("ddlc_settings", False), SensitiveIf(ddlc_settings)]
-            
+
             null height 10
 
             if ddlc_settings:
                 use ddlc_preferences
             else:
                 use template_preferences
-                            
+
     text "v[config.version]":
                 xalign 1.0 yalign 1.0
                 xoffset -10 yoffset -10
@@ -1426,60 +1450,41 @@ style value_text:
 
 screen history():
     tag menu
+
+    ## Avoid predicting this screen, as it can be very large.
     predict False
 
     use game_menu(_("History"), scroll=("vpgrid" if gui.history_height else "viewport")):
+
         style_prefix "history"
+
         for h in _history_list:
+
             window:
+
+                ## This lays things out properly if history_height is None.
                 has fixed:
                     yfit True
+
                 if h.who:
+
                     label h.who:
                         style "history_name"
+                        substitute False
+
+                        ## Take the color of the who text from the Character, if
+                        ## set.
                         if "color" in h.who_args:
                             text_color h.who_args["color"]
-                $ what = filter_text_tags(h.what, allow=set([]))
+
+                $ what = renpy.filter_text_tags(h.what, allow=gui.history_allow_tags)
                 text what:
                     substitute False
+
         if not _history_list:
             label _("The dialogue history is empty.")
 
-python early:
-    import renpy.text.textsupport as textsupport
-    from renpy.text.textsupport import TAG, PARAGRAPH
-    
-    def filter_text_tags(s, allow=None, deny=None):
-        if (allow is None) and (deny is None):
-            raise Exception("Only one of the allow and deny keyword arguments should be given to filter_text_tags.")
-
-        if (allow is not None) and (deny is not None):
-            raise Exception("Only one of the allow and deny keyword arguments should be given to filter_text_tags.")
-
-        tokens = textsupport.tokenize(unicode(s))
-
-        rv = [ ]
-
-        for tokentype, text in tokens:
-
-            if tokentype == PARAGRAPH:
-                rv.append("\n")
-            elif tokentype == TAG:
-                kind = text.partition("=")[0]
-
-                if kind and (kind[0] == "/"):
-                    kind = kind[1:]
-
-                if allow is not None:
-                    if kind in allow:
-                        rv.append("{" + text + "}")
-                else:
-                    if kind not in deny:
-                        rv.append("{" + text + "}")
-            else:
-                rv.append(text.replace("{", "{{"))
-
-        return "".join(rv)
+define gui.history_allow_tags = set()
 
 style history_window is empty
 
@@ -1707,7 +1712,8 @@ screen name_input(message, ok_action):
                 style "confirm_prompt"
                 xalign 0.5
 
-            input default "" value VariableInputValue("player") length 12 allow "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+            input default "" value VariableInputValue("player") length 12 allow "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя"
+            #additionally added Cyrillic characters to support Russian names for MC
 
             hbox:
                 xalign 0.5
@@ -2075,7 +2081,7 @@ screen choose_language():
                                 unhovered SetScreenVariable("local_lang", chosen_lang)
 
             $ lang_name = renpy.translate_string("{#language name and font}", local_lang)
-            
+
             hbox:
                 xalign 0.5
                 spacing 100

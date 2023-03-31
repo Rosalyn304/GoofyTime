@@ -10,19 +10,7 @@
 # Images are defined after the main poem game loop.
 
 init python: # This whole block runs when DDLC is started (as opposed to when the poem minigame is called)
-    import random
-
-    # This if/else statement checks if we are on Android and on 6.99.12.4
-    # to write 'poemwords.txt' to Android/data/[mod_name]/game for reading.
-    if renpy.android and renpy.version_tuple == (6, 99, 12, 4, 2187): 
-        poem_txt = os.path.join(os.environ['ANDROID_PUBLIC'] + "/game/poem_game/poemwords.txt")
-        try:
-            if not os.access(os.path.join(os.environ['ANDROID_PUBLIC'] + "/game/poem_game/", os.F_OK)):
-                os.mkdir(os.path.join(os.environ['ANDROID_PUBLIC'] + "/game/poem_game"))
-            file(poem_txt)
-        except IOError: open(poem_txt, "wb").write(renpy.file("poem_game/poemwords.txt").read())
-    else:
-        poem_txt = "poem_game/poemwords.txt"
+    poem_txt = "poem_game/poemwords.txt"
 
     # This class holds a word, and point values for each of the four heroines
     class PoemWord:
@@ -37,24 +25,18 @@ init python: # This whole block runs when DDLC is started (as opposed to when th
     POEM_DISLIKE_THRESHOLD = 29
     POEM_LIKE_THRESHOLD = 45
 
-    def readPoemFile(file):
-        with file as wordfile:
-            for line in wordfile:
-                # Ignore lines beginning with '#' and empty lines
-                line = line.decode("utf-8").strip()
-
-                if line == '' or '#' in line: continue
-
-                # File format: word,sPoint,nPoint,yPoint
-                x = line.split(',')
-                full_wordlist.append(PoemWord(x[0], float(x[1]), float(x[2]), float(x[3])))
-
     # Building the word list
     full_wordlist = []
-    if renpy.android and renpy.version_tuple == (6, 99, 12, 4, 2187): 
-        readPoemFile(file(poem_txt))
-    else:
-        readPoemFile(renpy.file(poem_txt))
+    with renpy.file(poem_txt) as wordfile:
+        for line in wordfile:
+            line = line.decode("utf-8").strip()
+
+            # Ignore lines beginning with '#' and empty lines
+            if line == '' or '#' in line: continue
+
+            # File format: word,sPoint,nPoint,yPoint
+            x = line.split(',')
+            full_wordlist.append(PoemWord(x[0], float(x[1]), float(x[2]), float(x[3])))
 
     seen_eyes_this_chapter = False
     sayoriTime = renpy.random.random() * 4 + 4
@@ -73,7 +55,6 @@ init python: # This whole block runs when DDLC is started (as opposed to when th
     natsukiZoom = 1
     yuriZoom = 1
     monikaZoom = 1
-    
 ##################################################################################
 #These functions define random pause lengths for each of the stickers' movements.
 #renpy.random.random() returns a random floating point number between 0 and 1

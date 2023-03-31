@@ -4,6 +4,10 @@
 # DO NOT MODIFY THIS FILE!
 
 python early:
+    
+    class NotRenPyEight(Exception):
+        def __str__(self):
+            return "This version of the mod template is designed for Ren'Py 8.\nEither build/run your mod on Ren'Py 8, or install the 'py2' mod template instead from scratch."
 
     class DDLCRPAsMissing(Exception):
         def __init__(self, archive):

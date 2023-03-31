@@ -14,23 +14,20 @@ define config.developer = False
 
 # This python statement starts singleton to make sure only one copy of the mod
 # is running.
-python early:
-    import singleton
-    me = singleton.SingleInstance()
 
 init -3 python:
     ## Dynamic Super Position (DSP)
-    # DSP is a feature in where the game upscales the positions of assets 
+    # DSP is a feature in where the game upscales the positions of assets
     # with higher resolutions (1080p).
     # This is just simple division from Adobe, implemented in Python.
     def dsp(orig_val):
         ceil = not isinstance(orig_val, float)
-        dsp_scale = config.screen_width / 1280.0 
+        dsp_scale = config.screen_width / 1280.0
         if ceil: return math.ceil(orig_val * dsp_scale)
         # since `absolute * float` -> `float`
         # we wanna keep the same type
         return type(orig_val)(orig_val * dsp_scale)
-    
+
     # This makes evaluating the value faster
     renpy.pure(dsp)
 
@@ -54,7 +51,7 @@ init python:
 
     # This variable declaration registers the music poem channel for the poem sharing music.
     renpy.music.register_channel("music_poem", mixer="music", tight=True)
-    
+
     # This function gets the postition of the music playing in a given channel.
     def get_pos(channel='music'):
         pos = renpy.music.get_pos(channel=channel)
@@ -75,7 +72,7 @@ init python:
             try: os.remove(config.basedir + "/characters/" + name + ".chr")
             except: pass
 
-    # These functions restores all the character CHR files to the characters folder 
+    # These functions restores all the character CHR files to the characters folder
     # given the playthrough number in the mod and list of characters to restore.
     def restore_character(names):
         if not isinstance(names, list):
@@ -98,7 +95,7 @@ init python:
             restore_character(["monika"])
         else:
             restore_character(["sayori", "natsuki", "yuri"])
-    
+
     # This function is obsolete as all characters now restores only
     # relevant characters to the characters folder.
     def restore_relevant_characters():
@@ -126,7 +123,7 @@ init python:
 #   t1 - This tells Ren'Py the label of the music/sound file being declared.
 #   <loop 22.073> - This tells Ren'Py to loop the music/sound to this position when the song completes.
 #   "bgm/1.ogg" - This tells Ren'Py the path of the music/sound file to use.
-# Example: 
+# Example:
 #   define audio.t2 = "bgm/2.ogg"
 
 define audio.t1 = "<loop 22.073>bgm/1.ogg" # Doki Doki Literature Club! - Main Theme
@@ -134,7 +131,7 @@ define audio.t2 = "<loop 4.499>bgm/2.ogg" # Ohayou Sayori! - Sayori Theme
 define audio.t2g = "bgm/2g.ogg"
 define audio.t2g2 = "<from 4.499 loop 4.499>bgm/2.ogg"
 define audio.t2g3 = "<loop 4.492>bgm/2g2.ogg"
-define audio.t3 = "<loop 4.618>bgm/3.ogg" # Main Theme - In Game 
+define audio.t3 = "<loop 4.618>bgm/3.ogg" # Main Theme - In Game
 define audio.t3g = "<to 15.255>bgm/3g.ogg"
 define audio.t3g2 = "<from 15.255 loop 4.618>bgm/3.ogg"
 define audio.t3g3 = "<loop 4.618>bgm/3g2.ogg"
@@ -182,7 +179,7 @@ define audio.fall = "sfx/fall.ogg"
 # To define a new color background, declare a new image statement like in this example:
 #     image blue = "X" where X is your color hex i.e. '#158353'
 # To define a new background, declare a new image statement like this instead:
-#     image bg bathroom = "mod_assets/bathroom.png" 
+#     image bg bathroom = "mod_assets/bathroom.png"
 
 image black = "#000000"
 image dark = "#000000e4"
@@ -309,7 +306,7 @@ image glitch_color2:
 # This is where the characters bodies and faces are defined in the mod.
 # They are defined by a left half, a right half and their head.
 # To define a new image, declare a new image statement like in this example:
-#     image sayori 1ca = im.Composite((960, 960), (0, 0), "mod_assets/sayori/1cl.png", (0, 0), "mod_assets/sayori/1cr.png", (0, 0), "sayori/a.png")
+#     image sayori 1ca = Composite((960, 960), (0, 0), "mod_assets/sayori/1cl.png", (0, 0), "mod_assets/sayori/1cr.png", (0, 0), "sayori/a.png")
 
 # Sayori's Character Definitions
 image sayori 1 = im.Composite((960, 960), (0, 0), "sayori/1l.png", (0, 0), "sayori/1r.png", (0, 0), "sayori/a.png")
@@ -858,7 +855,7 @@ image natsuki 5bx = im.Composite((960, 960), (18, 22), "natsuki/x.png", (0, 0), 
 image natsuki 5by = im.Composite((960, 960), (18, 22), "natsuki/y.png", (0, 0), "natsuki/3b.png")
 image natsuki 5bz = im.Composite((960, 960), (18, 22), "natsuki/z.png", (0, 0), "natsuki/3b.png")
 
-# These image definitions are left-overs of certain Natsuki expressions 
+# These image definitions are left-overs of certain Natsuki expressions
 # found in the original 1.0 release of DDLC.
 image natsuki 1 = im.Composite((960, 960), (0, 0), "natsuki/1l.png", (0, 0), "natsuki/1r.png", (0, 0), "natsuki/1t.png")
 image natsuki 2 = im.Composite((960, 960), (0, 0), "natsuki/1l.png", (0, 0), "natsuki/2r.png", (0, 0), "natsuki/1t.png")
@@ -868,7 +865,7 @@ image natsuki 5 = im.Composite((960, 960), (18, 22), "natsuki/1t.png", (0, 0), "
 
 # This image shows the realistic mouth on Natsuki on a random playthrough
 # of Act 2.
-image natsuki mouth = LiveComposite((960, 960), (0, 0), "natsuki/0.png", (390, 340), "n_rects_mouth", (480, 334), "n_rects_mouth")
+image natsuki mouth = im.Composite((960, 960), (0, 0), "natsuki/0.png", (390, 340), "n_rects_mouth", (480, 334), "n_rects_mouth")
 
 # This image shows black rectangles on Natsuki on a random playthrough
 # of Act 2.
@@ -926,7 +923,7 @@ image n_moving_mouth:
         ease 0.2 xzoom 0.8
         repeat
 
-# These images show the Natsuki ghost sprite shown in the poemgame of 
+# These images show the Natsuki ghost sprite shown in the poemgame of
 # Act 2.
 image natsuki_ghost_blood:
     "#00000000"
@@ -1178,7 +1175,7 @@ image yuri stab_2 = "yuri/stab/2.png"
 image yuri stab_3 = "yuri/stab/3.png"
 image yuri stab_4 = "yuri/stab/4.png"
 image yuri stab_5 = "yuri/stab/5.png"
-image yuri stab_6 = LiveComposite((960,960), (0, 0), "yuri/stab/6-mask.png", (0, 0), "yuri stab_6_eyes", (0, 0), "yuri/stab/6.png")
+image yuri stab_6 = im.Composite((960,960), (0, 0), "yuri/stab/6-mask.png", (0, 0), "yuri stab_6_eyes", (0, 0), "yuri/stab/6.png")
 
 # This image transform animates Yuri's eyes on her 6th stabbing in Act 2.
 image yuri stab_6_eyes:
@@ -1209,7 +1206,7 @@ image yuri stab_6_eyes:
 
 # These images shows Yuri with a offcenter right eye moving slowing away
 # from her face.
-image yuri oneeye = LiveComposite((960, 960), (0, 0), "yuri/1l.png", (0, 0), "yuri/1r.png", (0, 0), "yuri/oneeye.png", (0, 0), "yuri oneeye2")
+image yuri oneeye = im.Composite((960, 960), (0, 0), "yuri/1l.png", (0, 0), "yuri/1r.png", (0, 0), "yuri/oneeye.png", (0, 0), "yuri oneeye2")
 image yuri oneeye2:
     "yuri/oneeye2.png"
     subpixel True
@@ -1241,7 +1238,7 @@ image yuri glitch2:
     "yuri 1"
 
 # These image declarations show Yuri's moving eyes in Act 2.
-image yuri eyes = LiveComposite((1280, 720), (0, 0), "yuri/eyes1.png", (0, 0), "yuripupils")
+image yuri eyes = im.Composite((1280, 720), (0, 0), "yuri/eyes1.png", (0, 0), "yuripupils")
 
 # This image shows the base of Yuri's sprite as her eyes move.
 image yuri eyes_base = "yuri/eyes1.png"
@@ -1253,7 +1250,7 @@ image yuripupils:
 
 image yuri cuts = "yuri/cuts.png"
 
-# This image shows another glitched Yuri from Act 2. 
+# This image shows another glitched Yuri from Act 2.
 image yuri dragon:
     "yuri 3"
     0.25
@@ -1389,7 +1386,7 @@ image monika g1:
     xoffset 0 yoffset 0 zoom 1.00
     "monika 3"
 
-# This image transform shows Monika being glitched as she is 
+# This image transform shows Monika being glitched as she is
 # deleted in Act 3.
 image monika g2:
     block:

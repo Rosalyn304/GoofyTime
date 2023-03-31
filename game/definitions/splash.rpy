@@ -7,8 +7,6 @@
 # Note: For building a mod for PC/Android, you must keep the DDLC RPAs 
 # and decompile them for the builds to work.
 init -100 python:
-    import os
-    
     if not renpy.android:
         for archive in ['audio','images','fonts']:
             if archive not in config.archives:
@@ -40,8 +38,8 @@ init python:
     ## Syntax to use: recolorize("path/to/your/image", "#color1hex", "#color2hex", contrast value)
     ## Example: recolorize("gui/menu_bg.png", "#bdfdff", "#e6ffff", 1.25)
     def recolorize(path, blackCol="#ffbde1", whiteCol="#ffe6f4", contr=1.29):
-        return im.MatrixColor(im.MatrixColor(im.MatrixColor(path, im.matrix.desaturate() * im.matrix.contrast(contr)), im.matrix.colorize("#00f", "#fff")
-            * im.matrix.saturation(120)), im.matrix.desaturate() * im.matrix.colorize(blackCol, whiteCol))
+        return im.MatrixColor(im.MatrixColor(im.MatrixColor(path, im.matrix.desaturate() * im.matrix.contrast(contr)), 
+            im.matrix.colorize("#00f", "#fff") * im.matrix.saturation(120)), im.matrix.desaturate() * im.matrix.colorize(blackCol, whiteCol))
 
     def process_check(stream_list):
         if not renpy.windows:
@@ -301,17 +299,18 @@ label splashscreen:
         currentuser = ""
 
         if renpy.windows:
-            try: process_list = subprocess.check_output("wmic process get Description", shell=True).lower().replace("\r", "").replace(" ", "").split("\n")
+            try: process_list = subprocess.run("wmic process get Description", check=True, shell=True, stdout=subprocess.PIPE).stdout.lower().decode("utf-8").replace("\r", "").replace(" ", "").strip().split("\n")
             except subprocess.CalledProcessError:
                 try:
-                    process_list = subprocess.check_output("powershell (Get-Process).ProcessName", shell=True).lower().replace("\r", "").split("\n") # For W11 builds > 22000
+                    process_list = subprocess.run("powershell (Get-Process).ProcessName", check=True, shell=True, stdout=subprocess.PIPE).stdout.lower().decode("utf-8").replace("\r", "").strip().split("\n") # For W10/11 builds > 22000
                     
                     for i, x in enumerate(process_list):
                         process_list[i] = x + ".exe"
-                except subprocess.CalledProcessError: pass            
+                except: 
+                    pass            
         else:
-            try: process_list = subprocess.check_output("ps -A --format cmd", shell=True).decode('utf-8').split("\n") # Linux
-            except subprocess.CalledProcessError: process_list = subprocess.check_output("ps -A -o command", shell=True).decode('utf-8').split("\n") # MacOS
+            try: process_list = subprocess.run("ps -A --format cmd", check=True, shell=True, stdout=subprocess.PIPE).stdout.decode("utf-8").strip().split("\n") # Linux
+            except subprocess.CalledProcessError: process_list = subprocess.run("ps -A -o command", check=True, shell=True, stdout=subprocess.PIPE).stdout.decode("utf-8").strip().split("\n") # MacOS
                 
             process_list.pop(0)
 
@@ -339,18 +338,8 @@ label splashscreen:
             "No, continue where I left off.":
                 $ restore_relevant_characters()
 
-    if renpy.version_tuple == (6, 99, 12, 4, 2187) and not renpy.get_autoreload():
-        if os.path.exists(config.gamedir + "/definitions/splash.rpy"):
-            "{b}Warning:{/b} You are running the DDLC Mod Template on a version of Ren'Py that may be depreciated in the near future."
-            "Mod Template development has been focused to support DDLC on either Ren'Py 7 and Ren'Py 8."
-            "While this template supports the current Ren'Py version, this may not be the case in the near future."
-            "It is highly recommended that you upgrade to Ren'Py 7 to continue mod development. More information can be found [here](https://www.reddit.com/r/DDLCMods/wiki/notices/#wiki_why_is_the_megathread_and_other_users_recommending_me_to_create_my_mod_in_ren.27py_7.3F)."
-            window hide
-            pause 1.0
-            window auto
-
     if not persistent.lockdown_warning:
-        if os.path.exists(config.gamedir + "/core/lockdown_check.rpy"):
+        if config.developer:
             call lockdown_check
         else:
             $ persistent.lockdown_warning = True
@@ -427,7 +416,7 @@ label splashscreen:
             persistent.special_poems = [0,0,0]
             
             # This sets the range of poem numbers to pick from.
-            a = range(1,12)
+            a = list(range(1,12))
 
             # This for loop loops 3 times (array number of special_poems) and
             # assigns a random number to the array.
