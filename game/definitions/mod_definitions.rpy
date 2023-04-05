@@ -6,6 +6,27 @@ init:
 
 define valid_conversation = False
 define next_chat = 0
+define mood = 0
+
+image monika_room = "images/cg/monika/monika_room.png"
+
+image k_menu_art = "mod_assets/K_menu_art.png"
+
+image mask_2:
+    "images/cg/monika/mask_2.png"
+    xtile 3 subpixel True
+    block:
+        xoffset 1280
+        linear 1200 xoffset 0
+        repeat
+
+image mask_3:
+    "images/cg/monika/mask_3.png"
+    xtile 3 subpixel True
+    block:
+        xoffset 1280
+        linear 180 xoffset 0
+        repeat
 
 #Koto Definitions
 

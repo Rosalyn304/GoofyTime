@@ -49,7 +49,7 @@ label start:
     # REMOVE THIS LINE WHEN YOU HAVE MADE A STORY SCRIPT FILE AND CALLED IT HERE
     #call screen dialog(message="It seems that you are trying to run the mod template as a new game with no story.\nThis is a template, not an actual mod. Please code a story for your mod, call it in \'script.rpy\', and try again.", ok_action=MainMenu(confirm=False))
 
-    call intro from _call_intro
+    call intro
     ## Example on calling scripts from DDLC.
     # if persistent.playthrough == 0:
 

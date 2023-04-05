@@ -559,31 +559,15 @@ screen main_menu():
         add "menu_art_y_ghost"
         add "menu_art_n_ghost"
     else:
-        add "menu_bg"
-        add "menu_art_y"
-        add "menu_art_n"
+        add "monika_room" at truecenter
+        add "k_menu_art":
+            zoom 0.35 xalign 0.9 yalign 0.6
         frame
 
         ## The use statement includes another screen inside this one. The actual
         ## contents of the main menu are in the navigation screen.
         use navigation
 
-    if not persistent.ghost_menu:
-        add "menu_particles"
-        add "menu_particles"
-        add "menu_particles"
-        add "menu_logo"
-    if persistent.ghost_menu:
-        add "menu_art_s_ghost"
-        add "menu_art_m_ghost"
-    else:
-        if persistent.playthrough == 1 or persistent.playthrough == 2:
-            add "menu_art_s_glitch"
-        else:
-            add "menu_art_s"
-        add "menu_particles"
-        if persistent.playthrough != 4:
-            add "menu_art_m"
         add "menu_fade"
 
     if gui.show_name:
@@ -609,8 +593,6 @@ style main_menu_version is main_menu_text:
 style main_menu_frame:
     xsize 310
     yfill True
-
-    background "menu_nav"
 
 style main_menu_vbox:
     xalign 1.0
